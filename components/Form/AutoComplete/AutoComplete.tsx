@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import * as _ from "lodash";
 
 interface Props {
   onOptionSelect: React.Dispatch<React.SetStateAction<string | null>>;
@@ -16,6 +17,11 @@ const AutoComplete: React.FC<Props> = ({
   const [loading, toggleLoading] = useState(true);
   const [isInputFocused, toggleIsInputFocused] = useState(false);
   const inputRef = useRef(null);
+
+  const debouncedGetter = _.debounce(
+    async () => optionsGetter(query).then((res) => setOptions(res)),
+    250
+  );
 
   const handleOptionClick = (optionValue: string) => {
     inputRef.current.value = optionValue;
@@ -40,7 +46,7 @@ const AutoComplete: React.FC<Props> = ({
   };
 
   useEffect(() => {
-    optionsGetter(query).then((res) => setOptions(res));
+    debouncedGetter(query);
   }, [query]);
 
   useEffect(() => {
