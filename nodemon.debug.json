@@ -1,0 +1,7 @@
+{
+  "watch": ["actions", "components", "pages"],
+  "ext": "ts",
+  "ignore": ["src/public"],
+  "inspect": true,
+  "exec": "cross-env NODE_OPTIONS='--inspect' ts-node -r tsconfig-paths/register ./src --env=development"
+}
